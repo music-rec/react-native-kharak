@@ -1,4 +1,6 @@
 test/
 .babelrc
 .eslintrc
-node_modules/
+.npmignore
+.travis.yml
+yarn.lock
