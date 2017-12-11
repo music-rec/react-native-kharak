@@ -1,0 +1,73 @@
+{
+  "name": "react-native-walkuere",
+  "version": "0.0.0",
+  "description": "react-native-walkuere",
+  "main": "lib/index.js",
+  "scripts": {
+    "build": "babel src -d lib",
+    "test": "node test/run"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/limaofeng/react-native-walkuere.git"
+  },
+  "engines": {
+    "node": ">= 6.9.0",
+    "npm": ">= 3.0.0"
+  },
+  "keywords": [
+    "redux",
+    "graphql"
+  ],
+  "author": "limaofeng@msn.com",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/limaofeng/react-native-walkuere/issues"
+  },
+  "homepage": "https://github.com/limaofeng/react-native-walkuere#readme",
+  "peerDependencies": {
+    "react": "^16.1.1",
+    "redux": "^3.7.2"
+  },
+  "dependencies": {
+    "react": "^16.1.1",
+    "react-native": "^0.51.0",
+    "react-navigation": "^1.0.0-beta.21",
+    "react-redux": "^5.0.6",
+    "react-router-redux": "^5.0.0-alpha.8",
+    "redux": "^3.7.2",
+    "redux-thunk": "^2.2.0"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-core": "^6.26.0",
+    "babel-eslint": "^8.0.2",
+    "babel-plugin-inline-import": "^2.0.6",
+    "babel-plugin-transform-flow-strip-types": "^6.22.0",
+    "babel-preset-env": "^1.6.1",
+    "babel-preset-react": "^6.24.1",
+    "babel-preset-stage-3": "^6.24.1",
+    "eslint": "^4.11.0",
+    "eslint-config-airbnb": "^16.1.0",
+    "eslint-loader": "^1.9.0",
+    "eslint-plugin-flowtype": "^2.35.0",
+    "eslint-plugin-graphql": "^1.4.1",
+    "eslint-plugin-import": "^2.7.0",
+    "eslint-plugin-jsx-a11y": "^6.0.2",
+    "eslint-plugin-prettier": "^2.3.1",
+    "eslint-plugin-react": "^7.1.0",
+    "prettier": "^1.8.2",
+    "ws": "^3.3.1"
+  },
+  "prettier": {
+    "tabWidth": 2,
+    "printWidth": 120,
+    "singleQuote": true
+  },
+  "lint-staged": {
+    "src/**/*.{js,jsx,graphql}": [
+      "prettier --write",
+      "git add"
+    ]
+  }
+}
