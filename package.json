@@ -26,8 +26,9 @@
   },
   "homepage": "https://github.com/limaofeng/react-native-walkuere#readme",
   "peerDependencies": {
-    "react": "^16.1.1",
-    "redux": "^3.7.2"
+    "react": "*",
+    "react-native": "*",
+    "react-navigation": "*"
   },
   "dependencies": {
     "lodash": "^4.17.4",

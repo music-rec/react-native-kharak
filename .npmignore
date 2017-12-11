@@ -1,3 +1,4 @@
-/test
+test/
 .babelrc
 .eslintrc
+node_modules/
