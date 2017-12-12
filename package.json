@@ -1,6 +1,6 @@
 {
   "name": "react-native-walkuere",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "react-native-walkuere",
   "main": "lib/index.js",
   "scripts": {
@@ -15,7 +15,11 @@
     "node": ">= 6.9.0",
     "npm": ">= 3.0.0"
   },
-  "keywords": ["redux", "react-navigation", "react-native-vector-icons"],
+  "keywords": [
+    "redux",
+    "react-navigation",
+    "react-native-vector-icons"
+  ],
   "author": "limaofeng@msn.com",
   "license": "MIT",
   "bugs": {
@@ -66,6 +70,9 @@
     "singleQuote": true
   },
   "lint-staged": {
-    "src/**/*.{js,jsx,graphql}": ["prettier --write", "git add"]
+    "src/**/*.{js,jsx,graphql}": [
+      "prettier --write",
+      "git add"
+    ]
   }
 }
