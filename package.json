@@ -1,6 +1,6 @@
 {
   "name": "react-native-walkuere",
-  "version": "0.0.10",
+  "version": "0.0.11-0",
   "description": "react-native-walkuere",
   "main": "lib/index.js",
   "scripts": {
