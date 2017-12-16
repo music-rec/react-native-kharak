@@ -4,10 +4,9 @@ import { addNavigationHelpers, StackNavigator } from 'react-navigation';
 import CardStackStyleInterpolator from 'react-navigation/src/views/CardStack/CardStackStyleInterpolator';
 import { View, Image, TouchableOpacity } from 'react-native';
 
-export const createReducer = AppNavigator => ({ initialRouteName = 'Login' }) => {
-  const initialState = AppNavigator.router.getStateForAction(
-    AppNavigator.router.getActionForPathAndParams(initialRouteName)
-  );
+export const createReducer = ({ router: { getStateForAction, getActionForPathAndParams } } , { initialRouteName }) => () => {
+  const action = initialRouteName ? : getActionForPathAndParams(initialRouteName):
+  const initialState = getStateForAction(action);
 
   return (state = initialState, action) => {
     const nextState = AppNavigator.router.getStateForAction(action, state);
@@ -22,7 +21,6 @@ export const createAppNavigator = (routes, configs) => {
     },
     {
       headerMode: 'screen',
-      initialRouteName: 'Test',
       // 增加安卓可以从右侧滑入页面
       transitionConfig: () => ({
         screenInterpolator: CardStackStyleInterpolator.forHorizontal
@@ -30,10 +28,8 @@ export const createAppNavigator = (routes, configs) => {
       ...configs
     }
   );
-  AppNavigator.redux = ({ dispatch, nav }) => (
+  AppNavigator.Redux = ({ dispatch, nav }) => (
     <AppNavigator navigation={addNavigationHelpers({ dispatch, state: nav })} />
   );
-  return { AppNavigator, createReducer: createReducer(AppNavigator) };
+  return { AppNavigator, createReducer: createReducer(AppNavigator, { initialRouteName: configs.initialRouteName }) };
 };
-
-export const AppNavigator = Navigator;
