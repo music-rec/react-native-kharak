@@ -2,17 +2,25 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { addNavigationHelpers, StackNavigator } from 'react-navigation';
 import CardStackStyleInterpolator from 'react-navigation/src/views/CardStack/CardStackStyleInterpolator';
-import { View, Image, TouchableOpacity } from 'react-native';
 
-export const createReducer = ({ router: { getStateForAction, getActionForPathAndParams } } , { initialRouteName }) => () => {
-  const action = initialRouteName ? : getActionForPathAndParams(initialRouteName):
-  const initialState = getStateForAction(action);
+import CardStackTransitioner from './views/CardStack/CardStackTransitioner';
+import createCustomNavigator from './createCustomNavigator';
 
-  return (state = initialState, action) => {
-    const nextState = AppNavigator.router.getStateForAction(action, state);
-    return nextState || state;
-  };
+const WithRedux = ({ dispatch, nav }) => <AppNavigator navigation={addNavigationHelpers({ dispatch, state: nav })} />;
+
+WithRedux.propTypes = {
+  dispatch: PropTypes.object.isRequired,
+  nav: PropTypes.object.isRequired
 };
+
+export const createReducer = (AppNavigator, { initialRouteName }) => () => {
+  const { router: { getStateForAction, getActionForPathAndParams } } = AppNavigator;
+  const initialState = getStateForAction(getActionForPathAndParams(initialRouteName));
+
+  return (state = initialState, action) => getStateForAction(action, state) || state;
+};
+
+export const RightSideNavigator = createCustomNavigator(CardStackTransitioner);
 
 export const createAppNavigator = (routes, configs) => {
   const AppNavigator = StackNavigator(
@@ -28,8 +36,6 @@ export const createAppNavigator = (routes, configs) => {
       ...configs
     }
   );
-  AppNavigator.Redux = ({ dispatch, nav }) => (
-    <AppNavigator navigation={addNavigationHelpers({ dispatch, state: nav })} />
-  );
+  AppNavigator.Redux = WithRedux;
   return { AppNavigator, createReducer: createReducer(AppNavigator, { initialRouteName: configs.initialRouteName }) };
 };

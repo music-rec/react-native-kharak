@@ -1,11 +1,4 @@
 {
-    "presets": [
-        "env",
-        "react",
-        "stage-3"
-    ],
-    "plugins": [
-        "transform-flow-strip-types",
-        "inline-import"
-    ]
+  "presets": ["react-native"],
+  "plugins": ["transform-flow-strip-types", "inline-import"]
 }

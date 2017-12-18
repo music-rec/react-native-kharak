@@ -29,8 +29,8 @@
   "peerDependencies": {
     "react": "*",
     "react-native": "*",
-    "react-navigation": "*",
-    "react-native-vector-icons": "*"
+    "react-native-vector-icons": "*",
+    "react-navigation": "*"
   },
   "dependencies": {
     "lodash": "^4.17.4"
@@ -43,17 +43,18 @@
     "babel-plugin-transform-flow-strip-types": "^6.22.0",
     "babel-preset-env": "^1.6.1",
     "babel-preset-react": "^6.24.1",
+    "babel-preset-react-native": "^4.0.0",
     "babel-preset-stage-3": "^6.24.1",
-    "eslint": "^4.11.0",
-    "eslint-config-airbnb": "^16.1.0",
+    "eslint": "^4.13.1",
+    "eslint-config-prettier": "^2.9.0",
     "eslint-loader": "^1.9.0",
     "eslint-plugin-flowtype": "^2.40.1",
     "eslint-plugin-graphql": "^1.4.1",
     "eslint-plugin-import": "^2.7.0",
-    "eslint-plugin-jsx-a11y": "^6.0.2",
-    "eslint-plugin-prettier": "^2.3.1",
+    "eslint-plugin-jsx-a11y": "^6.0.3",
+    "eslint-plugin-prettier": "^2.4.0",
     "eslint-plugin-react": "^7.1.0",
-    "prettier": "^1.8.2",
+    "prettier": "^1.9.2",
     "react": "^16.1.1",
     "react-native": "^0.51.0",
     "react-native-vector-icons": "^4.4.2",
@@ -62,7 +63,7 @@
     "react-router-redux": "^5.0.0-alpha.8",
     "redux": "^3.7.2",
     "redux-thunk": "^2.2.0",
-    "ws": "^3.3.1"
+    "ws": "^3.3.3"
   },
   "prettier": {
     "tabWidth": 2,
