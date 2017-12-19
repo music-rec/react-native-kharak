@@ -27,5 +27,5 @@ notifications:
   slack:
     rooms:
       - kharak:xDTQ38LSCPeHFSievVaRMEcG #moment
-    on_success: always # change
+    on_success: change
     on_failure: always
