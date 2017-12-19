@@ -229,6 +229,10 @@ class CardStack extends React.Component<Props> {
 
         const hasDraggedEnough = Math.abs(currentDragDistance) > RESPOND_THRESHOLD;
 
+        if (this.isRight && !reverseRouteName) {
+          return false;
+        }
+
         if (this.isRight && reverseRouteName) {
           if (hasDraggedEnough) {
             navigation.navigate(reverseRouteName);
