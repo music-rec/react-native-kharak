@@ -21,5 +21,4 @@ export default class {
   get routes() {
     return this.route.map((component, idx) => React.cloneElement(component, { key: idx + this.route.length }));
   }
-
 }
