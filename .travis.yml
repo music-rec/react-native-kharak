@@ -24,3 +24,4 @@ deploy:
 
 notifications:
   email: false
+  slack: $SLACK_TOKEN
