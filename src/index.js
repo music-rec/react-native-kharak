@@ -1,9 +1,7 @@
 import Entypo from 'react-native-vector-icons/Entypo';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-
-import { createAppNavigator as createAppNavigatorTemp } from './navigation'
-import connector from './connector';
+import Feature from './connector';
 
 export const loadFonts = () => {
   Entypo.loadFont();
@@ -11,5 +9,5 @@ export const loadFonts = () => {
   Ionicons.loadFont();
 };
 
-export const Feature = connector;
-export const createAppNavigator = createAppNavigatorTemp
+export * from './navigation';
+export { Feature };

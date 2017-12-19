@@ -6,11 +6,15 @@ import CardStackStyleInterpolator from 'react-navigation/src/views/CardStack/Car
 import CardStackTransitioner from './views/CardStack/CardStackTransitioner';
 import createCustomNavigator from './createCustomNavigator';
 
-const WithRedux = ({ dispatch, nav }) => <AppNavigator navigation={addNavigationHelpers({ dispatch, state: nav })} />;
+const withRedux = AppNavigator => {
+  const ReduxWrapper = ({ dispatch, nav }) => (
+    <AppNavigator navigation={addNavigationHelpers({ dispatch, state: nav })} />
+  );
 
-WithRedux.propTypes = {
-  dispatch: PropTypes.object.isRequired,
-  nav: PropTypes.object.isRequired
+  ReduxWrapper.propTypes = {
+    dispatch: PropTypes.object.isRequired,
+    nav: PropTypes.object.isRequired
+  };
 };
 
 export const createReducer = (AppNavigator, { initialRouteName }) => () => {
@@ -36,6 +40,6 @@ export const createAppNavigator = (routes, configs) => {
       ...configs
     }
   );
-  AppNavigator.Redux = WithRedux;
+  AppNavigator.Redux = withRedux(appNavigator);
   return { AppNavigator, createReducer: createReducer(AppNavigator, { initialRouteName: configs.initialRouteName }) };
 };
