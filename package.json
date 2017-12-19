@@ -1,7 +1,7 @@
 {
-  "name": "react-native-walkuere",
-  "version": "0.0.15",
-  "description": "react-native-walkuere",
+  "name": "react-native-kharak",
+  "version": "0.0.0",
+  "description": "react-native-kharak",
   "main": "lib/index.js",
   "scripts": {
     "build": "babel src -d lib",
@@ -9,7 +9,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/limaofeng/react-native-walkuere.git"
+    "url": "git+https://github.com/limaofeng/react-native-kharak.git"
   },
   "engines": {
     "node": ">= 6.9.0",
@@ -23,9 +23,9 @@
   "author": "limaofeng@msn.com",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/limaofeng/react-native-walkuere/issues"
+    "url": "https://github.com/limaofeng/react-native-kharak/issues"
   },
-  "homepage": "https://github.com/limaofeng/react-native-walkuere#readme",
+  "homepage": "https://github.com/limaofeng/react-native-kharak#readme",
   "peerDependencies": {
     "react": "*",
     "react-native": "*",
