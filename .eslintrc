@@ -4,20 +4,9 @@
     "jest": true,
     "jquery": true
   },
-  "extends": [
-    "plugin:flowtype/recommended",
-    "plugin:react/recommended",
-    "plugin:import/errors",
-    "plugin:import/warnings",
-    "prettier",
-    "prettier/flowtype",
-    "prettier/react"
-  ],
+  "extends": "airbnb",
   "parser": "babel-eslint",
-  "plugins": [
-    "react",
-    "flowtype",
-    "prettier"],
+  "plugins": ["react", "jsx-a11y", "import", "flowtype", "prettier"],
   "rules": {
     "indent": 0,
     "space-before-function-paren": 0,
