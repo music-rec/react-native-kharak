@@ -40,6 +40,6 @@ export const createAppNavigator = (routes, configs) => {
       ...configs
     }
   );
-  AppNavigator.Redux = withRedux(appNavigator);
+  AppNavigator.Redux = withRedux(AppNavigator);
   return { AppNavigator, createReducer: createReducer(AppNavigator, { initialRouteName: configs.initialRouteName }) };
 };
