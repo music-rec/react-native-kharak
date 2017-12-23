@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Provider } from 'react-redux';
 import { persistStore, persistCombineReducers } from 'redux-persist';
 import { AsyncStorage } from 'react-native';
@@ -32,17 +33,9 @@ export const configureStore = (reducers = {}, initialState = {}, middlewares = [
   return store;
 };
 
-export const ReduxProvider = () => null;
+export const ReduxProvider = ({ store, children }) => <Provider store={store}>{children}</Provider>;
 
-export const withRedux = ({ store: externalStore, middlewares = [], reducers = {}, debug = false }) => {
-  if (!externalStore) {
-    store = configureStore(reducers, initialState, middlewares, { debug });
-  } else {
-    store = externalStore;
-  }
-  return WrappedComponent => () => (
-    <Provider store={store}>
-      <WrappedComponent store={store} />
-    </Provider>
-  );
+ReduxProvider.propTypes = {
+  store: PropTypes.any.isRequired,
+  children: PropTypes.any.isRequired
 };
