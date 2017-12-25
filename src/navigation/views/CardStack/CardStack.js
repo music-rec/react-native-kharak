@@ -239,13 +239,13 @@ class CardStack extends React.Component<Props> {
           }
           const isOnFirstCard = false; // immediateIndex === 0;
           const shouldSetResponder = hasDraggedEnough && axisHasBeenMeasured && !isOnFirstCard;
-          console.log('shouldSetResponder = ', hasDraggedEnough, axisHasBeenMeasured, !isOnFirstCard);
+          // console.log('shouldSetResponder = ', hasDraggedEnough, axisHasBeenMeasured, !isOnFirstCard);
           return shouldSetResponder;
         }
 
         const isOnFirstCard = immediateIndex === 0;
         const shouldSetResponder = hasDraggedEnough && axisHasBeenMeasured && !isOnFirstCard;
-        console.log(`${hasDraggedEnough} && ${axisHasBeenMeasured} && !${isOnFirstCard}`, '=', shouldSetResponder);
+        // console.log(`${hasDraggedEnough} && ${axisHasBeenMeasured} && !${isOnFirstCard}`, '=', shouldSetResponder);
         return shouldSetResponder;
       },
       onPanResponderMove: (event: any, gesture: any) => {
@@ -257,17 +257,17 @@ class CardStack extends React.Component<Props> {
           I18nManager.isRTL && axis === 'dx'
             ? startValue + gesture[axis] / axisDistance
             : startValue - gesture[axis] / axisDistance;
-        console.log(index - 1, currentValue, index);
+        // console.log(index - 1, currentValue, index);
         const value = clamp(index - 1, currentValue, index);
         if (this.isRight) {
-          console.log('position', currentValue);
+          // console.log('position', currentValue);
           position.setValue(Math.max(currentValue, index - 1));
         } else {
-          console.log(
+          /* console.log(
             'position',
             `clamp(${index - 1}, ${currentValue}, ${index})`,
             clamp(index - 1, currentValue, index)
-          );
+          ); */
           position.setValue(value);
         }
       },
@@ -294,18 +294,18 @@ class CardStack extends React.Component<Props> {
         const velocity = Math.max(Math.abs(gestureVelocity), defaultVelocity);
         const resetDuration = movedDistance / velocity;
         const goBackDuration = (axisDistance - movedDistance) / velocity;
-        console.log(`(${movedDistance}(movedDistance) / ${velocity}(velocity) = `, resetDuration);
+        /* console.log(`(${movedDistance}(movedDistance) / ${velocity}(velocity) = `, resetDuration);
         console.log(
           `(${axisDistance}(axisDistance) - ${movedDistance}(movedDistance)) / ${velocity}(velocity) = `,
           goBackDuration
-        );
+        ); */
 
         // To asyncronously get the current animated value, we need to run stopAnimation:
         position.stopAnimation((value: number) => {
           // If the speed of the gesture release is significant, use that as the indication
           // of intent
-          console.log('onPanResponderRelease', `${gestureVelocity} < -0.5 = `, gestureVelocity < -0.5);
-          console.log('onPanResponderRelease', `${gestureVelocity} > 0.5 = `, gestureVelocity > 0.5);
+          // console.log('onPanResponderRelease', `${gestureVelocity} < -0.5 = `, gestureVelocity < -0.5);
+          // console.log('onPanResponderRelease', `${gestureVelocity} > 0.5 = `, gestureVelocity > 0.5);
           if (gestureVelocity < -0.5) {
             this._reset(immediateIndex, resetDuration);
             return;
@@ -315,13 +315,13 @@ class CardStack extends React.Component<Props> {
             return;
           }
 
-          console.log(
-            'onPanResponderRelease',
-            `${value} <= ${index} - ${POSITION_THRESHOLD} = `,
-            value <= index - POSITION_THRESHOLD ? 'goBack' : 'reset',
-            immediateIndex,
-            value <= index - POSITION_THRESHOLD ? goBackDuration : resetDuration
-          );
+          // console.log(
+          //   'onPanResponderRelease',
+          //   `${value} <= ${index} - ${POSITION_THRESHOLD} = `,
+          //   value <= index - POSITION_THRESHOLD ? 'goBack' : 'reset',
+          //   immediateIndex,
+          //   value <= index - POSITION_THRESHOLD ? goBackDuration : resetDuration
+          // );
           // Then filter based on the distance the screen was moved. Over a third of the way swiped,
           // and the back will happen.
           if (value <= index - POSITION_THRESHOLD) {
@@ -340,7 +340,7 @@ class CardStack extends React.Component<Props> {
     const handlers = gesturesEnabled ? responder.panHandlers : {};
     const containerStyle = [styles.container, this._getTransitionConfig().containerStyle];
 
-    console.log('统计:', scenes.length, navigation);
+    // console.log('统计:', scenes.length, navigation);
 
     return (
       <View {...handlers} style={containerStyle}>
@@ -373,9 +373,9 @@ class CardStack extends React.Component<Props> {
     const style = screenInterpolator && screenInterpolator({ ...this.props, scene });
 
     const SceneComponent = this.props.router.getComponentForRouteName(scene.route.routeName);
-    if (style.transform[0].translateX) {
+    /* if (style.transform[0].translateX) {
       console.log('card styles = ', style.transform[0].translateX.__getValue());
-    }
+    } */
     return (
       <Card {...this.props} key={`card_${scene.key}`} style={[style, this.props.cardStyle]} scene={scene}>
         {this._renderInnerScene(SceneComponent, scene)}

@@ -1,3 +1,3 @@
 import Provider from './Provider';
 
-export { Provider };
+export const NotificationProvider = Provider;
