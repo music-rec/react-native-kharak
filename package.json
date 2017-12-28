@@ -8,6 +8,9 @@
     "build": "babel src -d lib",
     "test": "node test/run"
   },
+  "directories": {
+    "lib": "./lib"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/limaofeng/react-native-kharak.git"
@@ -54,6 +57,7 @@
     "eslint-plugin-jsx-a11y": "^6.0.3",
     "eslint-plugin-prettier": "^2.4.0",
     "eslint-plugin-react": "^7.1.0",
+    "moment": "^2.20.1",
     "prettier": "^1.9.2",
     "react": "^16.1.1",
     "react-native": "^0.51.0",
