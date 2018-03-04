@@ -6,7 +6,7 @@
   "scripts": {
     "precommit": "lint-staged",
     "build": "babel src -d lib",
-    "test": "node test/run"
+    "test": "jest"
   },
   "directories": {
     "lib": "./lib"
@@ -30,42 +30,41 @@
   },
   "homepage": "https://github.com/limaofeng/react-native-kharak#readme",
   "peerDependencies": {
-    "react": "*",
-    "react-native": "*",
-    "react-navigation": "*"
+    "react": "^16.3.0-alpha.1",
+    "react-native": "0.54.0",
+    "react-navigation": "1.4.0"
   },
   "dependencies": {
-    "lodash": "^4.17.5"
+    "lodash": "^4.17.5",
+    "react": "^16.3.0-alpha.1",
+    "react-native": "^0.54.0",
+    "react-redux": "^5.0.7",
+    "redux": "^3.7.2",
+    "redux-saga": "^0.16.0"
   },
   "devDependencies": {
-    "babel-cli": "^6.26.0",
     "babel-core": "^6.26.0",
     "babel-eslint": "^8.2.2",
-    "babel-plugin-transform-flow-strip-types": "^6.22.0",
-    "babel-preset-env": "^1.6.1",
-    "babel-preset-react": "^6.24.1",
-    "babel-preset-react-native": "^4.0.0",
-    "babel-preset-stage-3": "^6.24.1",
-    "eslint": "^4.18.0",
+    "babel-preset-react-native-stage-0": "^1.0.1",
+    "enzyme": "^3.3.0",
+    "enzyme-adapter-react-16": "^1.1.1",
+    "eslint": "^4.18.2",
     "eslint-config-airbnb": "^16.1.0",
-    "eslint-plugin-flowtype": "^2.45.0",
-    "eslint-plugin-graphql": "^1.5.0",
-    "eslint-plugin-import": "^2.7.0",
+    "eslint-plugin-import": "^2.9.0",
     "eslint-plugin-jsx-a11y": "^6.0.3",
     "eslint-plugin-prettier": "^2.6.0",
     "eslint-plugin-react": "^7.7.0",
-    "moment": "^2.20.1",
-    "prettier": "^1.10.2",
-    "react": "^16.1.1",
-    "react-native": "^0.53.3",
+    "jest": "^22.4.2",
+    "moment": "^2.21.0",
+    "prettier": "^1.11.1",
+    "react-dom": "^16.3.0-alpha.1",
     "react-native-push-notification": "^3.0.2",
-    "react-navigation": "^1.1.1",
-    "react-redux": "^5.0.7",
-    "redux": "^3.7.2",
+    "react-navigation": "^1.4.0",
+    "react-test-renderer": "^16.3.0-alpha.1",
     "redux-logger": "^3.0.6",
     "redux-persist": "^5.9.1",
     "redux-thunk": "^2.2.0",
-    "ws": "^4.0.0"
+    "ws": "^4.1.0"
   },
   "prettier": {
     "tabWidth": 2,
@@ -77,5 +76,127 @@
       "prettier --write",
       "git add"
     ]
+  },
+  "jest": {
+    "preset": "react-native",
+    "setupFiles": [
+      "<rootDir>/config/jest/setupTests.js"
+    ],
+    "testMatch": [
+      "<rootDir>/tests/**/*.test.js?(x)"
+    ],
+    "transform": {
+      "^.+\\.(js|jsx)$": "<rootDir>/node_modules/babel-jest",
+      "^(?!.*\\.(js|jsx)$)": "<rootDir>/config/jest/fileTransform.js"
+    },
+    "testEnvironment": "node",
+    "collectCoverageFrom": [
+      "src/**/*.{js,jsx}"
+    ],
+    "coverageDirectory": "./coverage/",
+    "collectCoverage": true,
+    "coveragePathIgnorePatterns": [
+      "<rootDir>/config/jest/setupTests.js"
+    ],
+    "modulePathIgnorePatterns": [
+      "/node_modules/.*/react-native/",
+      "/node_modules/.*/react/"
+    ],
+    "transformIgnorePatterns": [
+      "/node_modules/(?!react-native|react-navigation)/"
+    ]
+  },
+  "babel": {
+    "presets": [
+      "babel-preset-react-native-stage-0/decorator-support"
+    ],
+    "env": {
+      "development": {
+        "plugins": [
+          "transform-react-jsx-source"
+        ]
+      }
+    }
+  },
+  "eslintConfig": {
+    "extends": "airbnb",
+    "parser": "babel-eslint",
+    "plugins": [
+      "react",
+      "jsx-a11y",
+      "import",
+      "prettier"
+    ],
+    "env": {
+      "jasmine": true
+    },
+    "globals": {
+      "fetch": true
+    },
+    "rules": {
+      "indent": 0,
+      "space-before-function-paren": 0,
+      "prettier/prettier": "error",
+      "global-require": "off",
+      "comma-dangle": 0,
+      "no-restricted-syntax": 0,
+      "no-use-before-define": 0,
+      "no-param-reassign": "warn",
+      "object-curly-newline": "off",
+      "function-paren-newline": "off",
+      "react/prefer-stateless-function": "off",
+      "generator-star-spacing": ["error", {"before": true, "after": false}],
+      "no-console": 1,
+      "max-len": [
+        2,
+        120,
+        4
+      ],
+      "arrow-parens": [
+        "error",
+        "as-needed"
+      ],
+      "consistent-return": 0,
+      "no-confusing-arrow": 0,
+      "no-shadow": 0,
+      "no-underscore-dangle": 0,
+      "no-debugger": 1,
+      "no-continue": "warn",
+      "no-plusplus": [
+        "error",
+        {
+          "allowForLoopAfterthoughts": true
+        }
+      ],
+      "semi": 2,
+      "import/no-extraneous-dependencies": 0,
+      "import/prefer-default-export": 0,
+      "import/no-duplicates": 0,
+      "import/no-unresolved": [
+        2,
+        {
+          "ignore": [
+            ".png^"
+          ]
+        }
+      ],
+      "jsx-a11y/label-has-for": 0,
+      "jsx-a11y/anchor-is-valid": 0,
+      "jsx-a11y/click-events-have-key-events": 0,
+      "react/no-multi-comp": 0,
+      "react/no-array-index-key": [
+        1
+      ],
+      "react/forbid-prop-types": 0,
+      "react/jsx-filename-extension": [
+        1,
+        {
+          "extensions": [
+            ".js",
+            ".jsx"
+          ]
+        }
+      ]
+    }
   }
 }
