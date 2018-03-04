@@ -36,8 +36,7 @@
   },
   "dependencies": {
     "lodash": "^4.17.5",
-    "react": "^16.3.0-alpha.1",
-    "react-native": "^0.54.0",
+    "react-navigation-redux-helpers": "^1.0.2",
     "react-redux": "^5.0.7",
     "redux": "^3.7.2",
     "redux-saga": "^0.16.0"
@@ -57,6 +56,8 @@
     "jest": "^22.4.2",
     "moment": "^2.21.0",
     "prettier": "^1.11.1",
+    "react": "^16.3.0-alpha.1",
+    "react-native": "^0.54.0",
     "react-dom": "^16.3.0-alpha.1",
     "react-native-push-notification": "^3.0.2",
     "react-navigation": "^1.4.0",
@@ -145,7 +146,13 @@
       "object-curly-newline": "off",
       "function-paren-newline": "off",
       "react/prefer-stateless-function": "off",
-      "generator-star-spacing": ["error", {"before": true, "after": false}],
+      "generator-star-spacing": [
+        "error",
+        {
+          "before": true,
+          "after": false
+        }
+      ],
       "no-console": 1,
       "max-len": [
         2,

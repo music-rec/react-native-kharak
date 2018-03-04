@@ -1,33 +1,45 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import { addNavigationHelpers, StackNavigator } from 'react-navigation';
 import CardStackStyleInterpolator from 'react-navigation/src/views/CardStack/CardStackStyleInterpolator';
 
 import CardStackTransitioner from './views/CardStack/CardStackTransitioner';
 import createCustomNavigator from './createCustomNavigator';
 
-const withRedux = AppNavigator => {
-  const ReduxWrapper = ({ dispatch, nav }) => (
-    <AppNavigator navigation={addNavigationHelpers({ dispatch, state: nav })} />
-  );
-
-  ReduxWrapper.propTypes = {
-    dispatch: PropTypes.object.isRequired,
-    nav: PropTypes.object.isRequired
-  };
-};
-
-export const createReducer = (AppNavigator, { initialRouteName }) => () => {
-  const { router: { getStateForAction, getActionForPathAndParams } } = AppNavigator;
-  const initialState = getStateForAction(getActionForPathAndParams(initialRouteName));
-
-  return (state = initialState, action) => getStateForAction(action, state) || state;
-};
+import { addListener } from './redux';
 
 export const RightSideNavigator = createCustomNavigator(CardStackTransitioner);
 
-export const createAppNavigator = (routes, configs) => {
-  const AppNavigator = StackNavigator(
+class AppWithNavigationState extends React.Component {
+  static propTypes = {
+    dispatch: PropTypes.func.isRequired,
+    nav: PropTypes.object.isRequired,
+    appNavigator: PropTypes.element.isRequired
+  };
+
+  render() {
+    const { dispatch, nav, appNavigator: AppNavigator = StackNavigator } = this.props;
+    return (
+      <AppNavigator
+        navigation={addNavigationHelpers({
+          dispatch,
+          state: nav,
+          addListener
+        })}
+      />
+    );
+  }
+}
+
+const mapStateToProps = state => ({
+  nav: state.nav
+});
+
+const AppWithNavigationStateWrapper = connect(mapStateToProps)(AppWithNavigationState);
+
+export const configureAppNavigator = (routes, configs = {}, Navigator = StackNavigator) => {
+  const AppNavigator = Navigator(
     {
       ...routes
     },
@@ -40,6 +52,7 @@ export const createAppNavigator = (routes, configs) => {
       ...configs
     }
   );
-  AppNavigator.Redux = withRedux(AppNavigator);
-  return { AppNavigator, createReducer: createReducer(AppNavigator, { initialRouteName: configs.initialRouteName }) };
+  // AppNavigator.Redux = withRedux(AppNavigator);
+  // { AppNavigator, createReducer: createReducer(AppNavigator, { initialRouteName: configs.initialRouteName }) };
+  return <AppWithNavigationStateWrapper appNavigator={AppNavigator} />;
 };

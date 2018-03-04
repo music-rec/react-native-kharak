@@ -1,15 +1,16 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { Provider } from 'react-redux';
 import { persistStore, persistCombineReducers } from 'redux-persist';
 import { AsyncStorage } from 'react-native';
+import createSagaMiddleware from 'redux-saga';
 
 import { createStore, applyMiddleware, compose, combineReducers } from 'redux';
-import defaultMiddleware from './middleware';
+// import defaultMiddleware from './middleware';
 
-const initialState = {};
+import { middleware as navigationMiddleware } from '../navigation/redux';
 
-let store: any;
+const defaultMiddleware = [].concat(navigationMiddleware);
+
+export const saga = createSagaMiddleware();
+let store;
 export const configureStore = (reducers = {}, initialState = {}, middlewares = []) => {
   if (store) {
     store.replaceReducer(combineReducers(reducers));
@@ -25,17 +26,11 @@ export const configureStore = (reducers = {}, initialState = {}, middlewares = [
   store = createStore(
     persistCombineReducers(config, reducers), // combineReducers(reducers),
     initialState,
-    compose(applyMiddleware(...defaultMiddleware.concat(...middlewares)))
+    compose(applyMiddleware(...defaultMiddleware.concat(...middlewares).concat([saga])))
   );
   persistStore(store, null, (...args) => {
     console.log(args);
   });
+  store.runSaga = saga.run;
   return store;
-};
-
-export const ReduxProvider = ({ store, children }) => <Provider store={store}>{children}</Provider>;
-
-ReduxProvider.propTypes = {
-  store: PropTypes.any.isRequired,
-  children: PropTypes.any.isRequired
 };

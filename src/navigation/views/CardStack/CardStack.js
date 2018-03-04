@@ -1,7 +1,5 @@
-/* @flow */
-
-import * as React from 'react';
-
+import React from 'react';
+import PropTypes from 'prop-types';
 import clamp from 'clamp';
 import { Animated, StyleSheet, PanResponder, Platform, View, I18nManager, Easing } from 'react-native';
 
@@ -10,45 +8,9 @@ import { NavigationActions, addNavigationHelpers } from 'react-navigation';
 import Card from 'react-navigation/src/views/CardStack/Card';
 import SceneView from 'react-navigation/src/views/SceneView';
 
-import type {
-  NavigationLayout,
-  NavigationScreenProp,
-  NavigationScene,
-  NavigationRouter,
-  NavigationState,
-  NavigationScreenDetails,
-  NavigationStackScreenOptions,
-  ViewStyleProp,
-  TransitionConfig,
-  NavigationRoute,
-  NavigationComponent
-} from 'react-navigation/src/TypeDefinition';
-
 import TransitionConfigs from 'react-navigation/src/views/CardStack/TransitionConfigs';
 
 const emptyFunction = () => {};
-
-type Props = {
-  screenProps?: {},
-  mode: 'card' | 'modal',
-  router: NavigationRouter<NavigationState, NavigationStackScreenOptions>,
-  cardStyle?: ViewStyleProp,
-  onTransitionStart?: () => void,
-  onTransitionEnd?: () => void,
-  /**
-   * Optional custom animation when transitioning between screens.
-   */
-  transitionConfig?: () => TransitionConfig,
-
-  // NavigationTransitionProps:
-  layout: NavigationLayout,
-  navigation: NavigationScreenProp<NavigationState>,
-  position: Animated.Value,
-  progress: Animated.Value,
-  scenes: Array<NavigationScene>,
-  scene: NavigationScene,
-  index: number
-};
 
 /**
  * The max duration of the card animation in milliseconds after released gesture.
@@ -73,9 +35,9 @@ const RESPOND_THRESHOLD = 20;
  * The distance of touch start from the edge of the screen where the gesture will be recognized
  */
 const GESTURE_RESPONSE_DISTANCE_HORIZONTAL = 25;
-const GESTURE_RESPONSE_DISTANCE_VERTICAL = 135;
+// const GESTURE_RESPONSE_DISTANCE_VERTICAL = 135;
 
-const animatedSubscribeValue = (animatedValue: Animated.Value) => {
+const animatedSubscribeValue = animatedValue => {
   if (!animatedValue.__isNative) {
     return;
   }
@@ -84,32 +46,28 @@ const animatedSubscribeValue = (animatedValue: Animated.Value) => {
   }
 };
 
-class CardStack extends React.Component<Props> {
-  /**
-   * Used to identify the starting point of the position when the gesture starts, such that it can
-   * be updated according to its relative position. This means that a card can effectively be
-   * "caught"- If a gesture starts while a card is animating, the card does not jump into a
-   * corresponding location for the touch.
-   */
-  _gestureStartValue: number = 0;
+class CardStack extends React.Component {
+  static propTypes = {
+    mode: PropTypes.string.isRequired,
+    screenProps: PropTypes.any.isRequired,
+    navigation: PropTypes.any.isRequired,
+    position: PropTypes.any.isRequired,
+    router: PropTypes.any.isRequired,
+    scenes: PropTypes.array.isRequired,
+    transitionConfig: PropTypes.any.isRequired,
+    cardStyle: PropTypes.any.isRequired,
+    layout: PropTypes.any.isRequired,
+    scene: PropTypes.any.isRequired
+  };
+  constructor(props) {
+    super(props);
+    this._gestureStartValue = 0;
+    this._isResponding = false;
+    this._immediateIndex = null;
+    this._screenDetails = {};
+  }
 
-  // tracks if a touch is currently happening
-  _isResponding: boolean = false;
-
-  /**
-   * immediateIndex is used to represent the expected index that we will be on after a
-   * transition. To achieve a smooth animation when swiping back, the action to go back
-   * doesn't actually fire until the transition completes. The immediateIndex is used during
-   * the transition so that gestures can be handled correctly. This is a work-around for
-   * cases when the user quickly swipes back several times.
-   */
-  _immediateIndex: ?number = null;
-
-  _screenDetails: {
-    [key: string]: ?NavigationScreenDetails<NavigationStackScreenOptions>
-  } = {};
-
-  componentWillReceiveProps(props: Props) {
+  componentWillReceiveProps(props) {
     if (props.screenProps !== this.props.screenProps) {
       this._screenDetails = {};
     }
@@ -120,11 +78,11 @@ class CardStack extends React.Component<Props> {
     });
   }
 
-  _getScreenDetails = (scene: NavigationScene): NavigationScreenDetails<*> => {
+  _getScreenDetails = scene => {
     const { screenProps, navigation, router } = this.props;
     let screenDetails = this._screenDetails[scene.key];
     if (!screenDetails || screenDetails.state !== scene.route) {
-      const screenNavigation: NavigationScreenProp<NavigationRoute> = addNavigationHelpers({
+      const screenNavigation = addNavigationHelpers({
         dispatch: navigation.dispatch,
         state: scene.route
       });
@@ -139,7 +97,7 @@ class CardStack extends React.Component<Props> {
   };
 
   // eslint-disable-next-line class-methods-use-this
-  _animatedSubscribe(props: Props) {
+  _animatedSubscribe(props) {
     // Hack to make this work with native driven animations. We add a single listener
     // so the JS value of the following animated values gets updated. We rely on
     // some Animated private APIs and not doing so would require using a bunch of
@@ -183,7 +141,32 @@ class CardStack extends React.Component<Props> {
     });
   }
 
-  render(): React.Node {
+  _renderInnerScene(SceneComponent, scene) {
+    const { navigation } = this._getScreenDetails(scene);
+    const { screenProps } = this.props;
+    return <SceneView screenProps={screenProps} navigation={navigation} component={SceneComponent} />;
+  }
+
+  _getTransitionConfig = () => {
+    const isModal = this.props.mode === 'modal';
+    return TransitionConfigs.getTransitionConfig(this.props.transitionConfig, {}, {}, isModal);
+  };
+
+  _renderCard = (scene): React.Node => {
+    const { screenInterpolator } = this._getTransitionConfig();
+    const style = screenInterpolator && screenInterpolator({ ...this.props, scene });
+
+    const SceneComponent = this.props.router.getComponentForRouteName(scene.route.routeName);
+    /* if (style.transform[0].translateX) {
+      console.log('card styles = ', style.transform[0].translateX.__getValue());
+    } */
+    return (
+      <Card {...this.props} key={`card_${scene.key}`} style={[style, this.props.cardStyle]} scene={scene}>
+        {this._renderInnerScene(SceneComponent, scene)}
+      </Card>
+    );
+  };
+  render() {
     const { navigation, position, layout, scene, scenes, mode } = this.props;
     const { index } = navigation.state;
     const isVertical = mode === 'modal';
@@ -255,19 +238,12 @@ class CardStack extends React.Component<Props> {
         const axisDistance = isVertical ? layout.height.__getValue() : layout.width.__getValue();
         const currentValue =
           I18nManager.isRTL && axis === 'dx'
-            ? startValue + gesture[axis] / axisDistance
-            : startValue - gesture[axis] / axisDistance;
-        // console.log(index - 1, currentValue, index);
+            ? startValue + gesture[axis] / axisDistance // eslint-disable-line
+            : startValue - gesture[axis] / axisDistance; // eslint-disable-line
         const value = clamp(index - 1, currentValue, index);
         if (this.isRight) {
-          // console.log('position', currentValue);
           position.setValue(Math.max(currentValue, index - 1));
         } else {
-          /* console.log(
-            'position',
-            `clamp(${index - 1}, ${currentValue}, ${index})`,
-            clamp(index - 1, currentValue, index)
-          ); */
           position.setValue(value);
         }
       },
@@ -348,40 +324,6 @@ class CardStack extends React.Component<Props> {
       </View>
     );
   }
-
-  _renderInnerScene(SceneComponent: NavigationComponent, scene: NavigationScene): React.Node {
-    const { navigation } = this._getScreenDetails(scene);
-    const { screenProps } = this.props;
-    return <SceneView screenProps={screenProps} navigation={navigation} component={SceneComponent} />;
-  }
-
-  _getTransitionConfig = () => {
-    const isModal = this.props.mode === 'modal';
-
-    return TransitionConfigs.getTransitionConfig(
-      this.props.transitionConfig,
-      /* $FlowFixMe */
-      {},
-      /* $FlowFixMe */
-      {},
-      isModal
-    );
-  };
-
-  _renderCard = (scene: NavigationScene): React.Node => {
-    const { screenInterpolator } = this._getTransitionConfig();
-    const style = screenInterpolator && screenInterpolator({ ...this.props, scene });
-
-    const SceneComponent = this.props.router.getComponentForRouteName(scene.route.routeName);
-    /* if (style.transform[0].translateX) {
-      console.log('card styles = ', style.transform[0].translateX.__getValue());
-    } */
-    return (
-      <Card {...this.props} key={`card_${scene.key}`} style={[style, this.props.cardStyle]} scene={scene}>
-        {this._renderInnerScene(SceneComponent, scene)}
-      </Card>
-    );
-  };
 }
 
 const styles = StyleSheet.create({

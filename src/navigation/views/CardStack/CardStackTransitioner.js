@@ -1,63 +1,39 @@
-/* @flow */
-
-import * as React from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import { NativeModules } from 'react-native';
 import { Transitioner } from 'react-navigation';
 
-import CardStack from './CardStack';
 import CardStackStyleInterpolator from 'react-navigation/src/views/CardStack/CardStackStyleInterpolator';
 import TransitionConfigs from 'react-navigation/src/views/CardStack/TransitionConfigs';
 
-import type {
-  NavigationSceneRenderer,
-  NavigationScreenProp,
-  NavigationStackScreenOptions,
-  NavigationState,
-  NavigationTransitionProps,
-  NavigationNavigatorProps,
-  NavigationRouter,
-  ViewStyleProp,
-  TransitionConfig
-} from 'react-navigation/src/TypeDefinition';
+import CardStack from './CardStack';
 
 const NativeAnimatedModule = NativeModules && NativeModules.NativeAnimatedModule;
 
-type Props = {
-  mode: 'card' | 'modal',
-  router: NavigationRouter<NavigationState, NavigationStackScreenOptions>,
-  cardStyle?: ViewStyleProp,
-  onTransitionStart?: () => void,
-  onTransitionEnd?: () => void,
-  /**
-   * Optional custom animation when transitioning between screens.
-   */
-  transitionConfig?: () => TransitionConfig
-} & NavigationNavigatorProps<NavigationStackScreenOptions, NavigationState>;
-
-class CardStackTransitioner extends React.Component<Props> {
-  _render: NavigationSceneRenderer;
-
+class CardStackTransitioner extends React.Component {
+  static propTypes = {
+    mode: PropTypes.string,
+    navigation: PropTypes.any.isRequired,
+    position: PropTypes.any.isRequired,
+    onTransitionStart: PropTypes.func.isRequired,
+    onTransitionEnd: PropTypes.func.isRequired,
+    screenProps: PropTypes.any.isRequired,
+    scenes: PropTypes.array.isRequired,
+    router: PropTypes.array.isRequired,
+    transitionConfig: PropTypes.any.isRequired,
+    cardStyle: PropTypes.any.isRequired,
+    layout: PropTypes.any.isRequired,
+    scene: PropTypes.any.isRequired
+  };
   static defaultProps = {
     mode: 'card'
   };
 
-  render() {
-    return (
-      <Transitioner
-        configureTransition={this._configureTransition}
-        navigation={this.props.navigation}
-        render={this._render}
-        onTransitionStart={this.props.onTransitionStart}
-        onTransitionEnd={this.props.onTransitionEnd}
-      />
-    );
-  }
-
   _configureTransition = (
     // props for the new screen
-    transitionProps: NavigationTransitionProps,
+    transitionProps,
     // props for the old screen
-    prevTransitionProps: ?NavigationTransitionProps
+    prevTransitionProps
   ) => {
     const isModal = this.props.mode === 'modal';
     // Copy the object so we can assign useNativeDriver below
@@ -81,7 +57,7 @@ class CardStackTransitioner extends React.Component<Props> {
     return transitionSpec;
   };
 
-  _render = (props: NavigationTransitionProps): React.Node => {
+  _render = props => {
     const { screenProps, mode, router, cardStyle, transitionConfig } = this.props;
     return (
       <CardStack
@@ -94,6 +70,18 @@ class CardStackTransitioner extends React.Component<Props> {
       />
     );
   };
+
+  render() {
+    return (
+      <Transitioner
+        configureTransition={this._configureTransition}
+        navigation={this.props.navigation}
+        render={this._render}
+        onTransitionStart={this.props.onTransitionStart}
+        onTransitionEnd={this.props.onTransitionEnd}
+      />
+    );
+  }
 }
 
 export default CardStackTransitioner;

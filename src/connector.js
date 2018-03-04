@@ -1,13 +1,42 @@
-/* eslint-disable prefer-rest-params, no-unused-vars */
+/* eslint-disable prefer-rest-params, no-unused-vars, require-yield */
 import React from 'react';
 import { merge, map, union, without, castArray } from 'lodash';
+import { call, put } from 'redux-saga/effects';
 
 const combine = (features, extractor) => without(union(...map(features, res => castArray(extractor(res)))), undefined);
 
-export default class {
-  constructor({ route, navItem, reducer }, ...features) {
+export default class Connector {
+  constructor({ namespace, state: initialState, reducer, effects, route, navItem }, ...features) {
+    if (!(arguments[0] instanceof Connector)) {
+      this.reducer = [
+        {
+          [namespace]: (state = initialState, action) => {
+            if (action.type.startsWith('@@')) {
+              return state;
+            }
+            const { type } = action;
+            let func = effects[type.replace(new RegExp(`^${namespace}/`), '')];
+            if (func) {
+              require('./redux').saga.run(function *(...args) {// eslint-disable-line
+                const result = func(action, { call, put });
+                if (result[Symbol.iterator]) {
+                  while (!result.next().done);
+                }
+              });
+              return state;
+            }
+            func = reducer[type.replace(new RegExp(`^${namespace}/`), '')];
+            if (func) {
+              return func(state, action);
+            }
+            return state;
+          }
+        }
+      ];
+    } else {
+      this.reducer = combine(arguments, arg => arg.reducers);
+    }
     this.tabItem = combine(arguments, arg => arg.tabItem);
-    this.reducer = combine(arguments, arg => arg.reducer);
     this.route = combine(arguments, arg => arg.route);
   }
 
