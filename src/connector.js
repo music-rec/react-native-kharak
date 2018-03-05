@@ -17,11 +17,8 @@ export default class Connector {
             const { type } = action;
             let func = effects[type.replace(new RegExp(`^${namespace}/`), '')];
             if (func) {
-              require('./redux').saga.run(function *(...args) {// eslint-disable-line
-                const result = func(action, { call, put });
-                if (result[Symbol.iterator]) {
-                  while (!result.next().done);
-                }
+              require('./redux').saga.run(function *() {// eslint-disable-line
+                yield call(func, action, { call, put });
               });
               return state;
             }
