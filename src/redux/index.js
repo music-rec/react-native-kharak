@@ -7,13 +7,14 @@ import { createStore, applyMiddleware, compose, combineReducers } from 'redux';
 
 import { middleware as navigationMiddleware } from '../navigation/redux';
 
-const defaultMiddleware = [].concat(navigationMiddleware);
-
 export const saga = createSagaMiddleware();
+
+const defaultMiddleware = [].concat(navigationMiddleware, saga);
+
 let store;
 export const configureStore = (reducers = {}, initialState = {}, middlewares = []) => {
   if (store) {
-    store.replaceReducer(combineReducers(reducers));
+    store.replaceReducer(combineReducers({ ...reducers }));
     return store;
   }
   const config = {
@@ -24,7 +25,7 @@ export const configureStore = (reducers = {}, initialState = {}, middlewares = [
     // whitelist: ['user'],
   };
   store = createStore(
-    persistCombineReducers(config, reducers), // combineReducers(reducers),
+    persistCombineReducers(config, { ...reducers }), // combineReducers(reducers),
     initialState,
     compose(applyMiddleware(...defaultMiddleware.concat(...middlewares).concat([saga])))
   );

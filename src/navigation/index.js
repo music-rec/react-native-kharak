@@ -7,7 +7,7 @@ import CardStackStyleInterpolator from 'react-navigation/src/views/CardStack/Car
 import CardStackTransitioner from './views/CardStack/CardStackTransitioner';
 import createCustomNavigator from './createCustomNavigator';
 
-import { addListener } from './redux';
+import { addListener, createReducer } from './redux';
 
 export const RightSideNavigator = createCustomNavigator(CardStackTransitioner);
 
@@ -52,7 +52,7 @@ export const configureAppNavigator = (routes, configs = {}, Navigator = StackNav
       ...configs
     }
   );
-  // AppNavigator.Redux = withRedux(AppNavigator);
-  // { AppNavigator, createReducer: createReducer(AppNavigator, { initialRouteName: configs.initialRouteName }) };
-  return <AppWithNavigationStateWrapper appNavigator={AppNavigator} />;
+  const AppNavigationWrapper = () => <AppWithNavigationStateWrapper appNavigator={AppNavigator} />;
+  AppNavigationWrapper.createReducer = () => createReducer(AppNavigator);
+  return AppNavigationWrapper;
 };

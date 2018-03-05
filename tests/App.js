@@ -1,37 +1,34 @@
 import React from 'react';
 import { AppRegistry, View, Text } from 'react-native';
-import { Provider } from 'react-redux';
 
-import { configureAppNavigator } from '../src/navigation';
-import { configureStore } from '../src/redux/index';
+import kharak from '../src';
 
-const HelloScreen = () => (
+const MainScreen = () => (
   <View>
-    <Text>Hello, world</Text>
+    <Text>Hello, main</Text>
+  </View>
+);
+const LoginScreen = () => (
+  <View>
+    <Text>Hello, login</Text>
   </View>
 );
 
-const store = configureStore({
-  user(state = { name: 'limaofeng' }) {
-    return state;
+const ExampleApp = kharak({
+  reducers: {
+    user(state = { name: 'limaofeng' }) {
+      return state;
+    }
+  },
+  routes: {
+    Main: {
+      screen: MainScreen
+    },
+    Login: {
+      screen: LoginScreen
+    }
   }
 });
-
-const AppNavigator = configureAppNavigator({
-  Hello: {
-    screen: HelloScreen
-  }
-});
-
-class ExampleApp extends React.Component {
-  render() {
-    return (
-      <Provider store={store}>
-        <AppNavigator />
-      </Provider>
-    );
-  }
-}
 
 AppRegistry.registerComponent('Example', () => ExampleApp);
 

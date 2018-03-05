@@ -2,9 +2,10 @@ module.exports = wallaby => ({
   files: [
     { pattern: 'src/**/*.+(json|jpg|jpeg|gif|png|svg)', instrument: false },
     'config/**/*.js',
+    'tests/App.js',
     'src/**/*.js?(x)',
   ],
-  tests: ['tests/**/*.test.js?(x)','tests/App.js'],
+  tests: ['tests/**/*.test.js?(x)'],
   compilers: {
     '**/*.js?(x)': wallaby.compilers.babel({ babel: require('babel-core') })
   },
