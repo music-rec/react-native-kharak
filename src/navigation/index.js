@@ -36,6 +36,7 @@ export const configureAppNavigator = (routes, configs = {}, Navigator = StackNav
     }
   );
   const AppNavigationWrapper = () => <AppWithNavigationState appNavigator={AppNavigator} />;
-  AppNavigationWrapper.createReducer = () => createReducer(AppNavigator);
+  AppNavigationWrapper.createReducer = () =>
+    createReducer(AppNavigator, { initialRouteName: configs.initialRouteName });
   return AppNavigationWrapper;
 };
