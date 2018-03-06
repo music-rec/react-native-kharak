@@ -12,7 +12,7 @@ export const saga = createSagaMiddleware();
 const defaultMiddleware = [].concat(navigationMiddleware, saga);
 
 let store;
-export const configureStore = (reducers = {}, initialState = {}, middlewares = []) => {
+export const configureStore = (reducers = {}, initialState = {}, middlewares = [], { compose = compose }) => {
   if (store) {
     store.replaceReducer(combineReducers({ ...reducers }));
     return store;

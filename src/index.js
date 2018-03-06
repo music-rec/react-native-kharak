@@ -10,7 +10,7 @@ export const Feature = Connector;
 export * from './redux';
 export * from './navigation';
 
-export default ({ routes, reducers, initialState = {}, middlewares = [], routeConfigs = {} }) => {
+export default ({ routes, reducers, initialState = {}, middlewares = [], routeConfigs = {}, compose }) => {
   const AppNavigator = configureAppNavigator(routes, routeConfigs);
   const store = configureStore(
     {
@@ -18,7 +18,8 @@ export default ({ routes, reducers, initialState = {}, middlewares = [], routeCo
       ...AppNavigator.createReducer()
     },
     initialState,
-    middlewares
+    middlewares,
+    { compose }
   );
   return () => (
     <Provider store={store}>
