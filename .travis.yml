@@ -12,7 +12,8 @@ install:
   - yarn global add codacy-coverage
   
 script:
-  - yarn build
+  - yarn run test
+  - cat coverage/lcov.info | codacy-coverage
   
 deploy:
   provider: npm
