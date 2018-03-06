@@ -11,32 +11,15 @@ import { addListener, createReducer } from './redux';
 
 export const RightSideNavigator = createCustomNavigator(CardStackTransitioner);
 
-class AppWithNavigationState extends React.Component {
-  static propTypes = {
-    dispatch: PropTypes.func.isRequired,
-    nav: PropTypes.object.isRequired,
-    appNavigator: PropTypes.func.isRequired
-  };
-
-  render() {
-    const { dispatch, nav, appNavigator: AppNavigator } = this.props;
-    return (
-      <AppNavigator
-        navigation={addNavigationHelpers({
-          dispatch,
-          state: nav,
-          addListener
-        })}
-      />
-    );
-  }
-}
-
-const mapStateToProps = state => ({
-  nav: state.nav
-});
-
-const AppWithNavigationStateWrapper = connect(mapStateToProps)(AppWithNavigationState);
+const AppWithNavigationState = connect(({ nav }) => ({ nav }))(({ dispatch, nav, appNavigator: AppNavigator }) => (
+  <AppNavigator
+    navigation={addNavigationHelpers({
+      dispatch,
+      state: nav,
+      addListener
+    })}
+  />
+));
 
 export const configureAppNavigator = (routes, configs = {}, Navigator = StackNavigator) => {
   const AppNavigator = Navigator(
@@ -52,7 +35,7 @@ export const configureAppNavigator = (routes, configs = {}, Navigator = StackNav
       ...configs
     }
   );
-  const AppNavigationWrapper = () => <AppWithNavigationStateWrapper appNavigator={AppNavigator} />;
+  const AppNavigationWrapper = () => <AppWithNavigationState appNavigator={AppNavigator} />;
   AppNavigationWrapper.createReducer = () => createReducer(AppNavigator);
   return AppNavigationWrapper;
 };

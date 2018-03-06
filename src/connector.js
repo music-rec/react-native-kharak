@@ -6,8 +6,8 @@ import { call, put } from 'redux-saga/effects';
 const combine = (features, extractor) => without(union(...map(features, res => castArray(extractor(res)))), undefined);
 
 export default class Connector {
-  constructor({ namespace, state: initialState, reducer, effects, route, navItem }, ...features) {
-    if (!(arguments[0] instanceof Connector)) {
+  constructor({ namespace = null, state: initialState = {}, reducer = {}, effects = {}, route, navItem }, ...features) {
+    if (!(arguments[0] instanceof Connector) && namespace) {
       this.reducer = [
         {
           [namespace]: (state = initialState, action) => {
@@ -17,7 +17,8 @@ export default class Connector {
             const { type } = action;
             let func = effects[type.replace(new RegExp(`^${namespace}/`), '')];
             if (func) {
-              require('./redux').saga.run(function *() {// eslint-disable-line
+              // eslint-disable-next-line
+              require('./redux').saga.run(function*() {
                 yield call(func, action, { call, put });
               });
               return state;
@@ -31,7 +32,7 @@ export default class Connector {
         }
       ];
     } else {
-      this.reducer = combine(arguments, arg => arg.reducers);
+      this.reducer = combine(arguments, arg => arg.reducers || {});
     }
     this.tabItem = combine(arguments, arg => arg.tabItem);
     this.route = combine(arguments, arg => arg.route);
