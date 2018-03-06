@@ -2,7 +2,7 @@
   "name": "react-native-kharak",
   "version": "1.0.0",
   "description": "react-native-kharak",
-  "main": "src/index.js",
+  "main": "lib/index.js",
   "scripts": {
     "precommit": "lint-staged",
     "build": "babel src -d lib",
@@ -43,6 +43,7 @@
     "redux-saga": "^0.16.0"
   },
   "devDependencies": {
+    "babel-cli": "^6.26.0",
     "babel-core": "^6.26.0",
     "babel-eslint": "^8.2.2",
     "babel-preset-react-native-stage-0": "^1.0.1",
