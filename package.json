@@ -16,8 +16,8 @@
     "url": "git+https://github.com/limaofeng/react-native-kharak.git"
   },
   "engines": {
-    "node": ">= 6.9.0",
-    "npm": ">= 3.0.0"
+    "node": ">= 8.9.4",
+    "npm": ">= 5.6.0"
   },
   "keywords": [
     "redux",
