@@ -39,8 +39,8 @@
     "react-navigation-redux-helpers": "^1.0.2",
     "react-redux": "^5.0.7",
     "redux": "^3.7.2",
-    "redux-saga": "^0.16.0",
-    "redux-persist": "^5.9.1"
+    "redux-persist": "^5.9.1",
+    "redux-saga": "^0.16.0"
   },
   "devDependencies": {
     "babel-core": "^6.26.0",
@@ -54,17 +54,14 @@
     "eslint-plugin-jsx-a11y": "^6.0.3",
     "eslint-plugin-prettier": "^2.6.0",
     "eslint-plugin-react": "^7.7.0",
+    "husky": "^0.14.3",
     "jest": "^22.4.2",
     "moment": "^2.21.0",
     "prettier": "^1.11.1",
     "react": "^16.3.0-alpha.1",
-    "react-native": "^0.54.0",
     "react-dom": "^16.3.0-alpha.1",
-    "react-native-push-notification": "^3.0.2",
-    "react-test-renderer": "^16.3.0-alpha.1",
-    "redux-logger": "^3.0.6",
-    "redux-thunk": "^2.2.0",
-    "ws": "^4.1.0"
+    "react-native": "^0.54.0",
+    "react-test-renderer": "^16.3.0-alpha.1"
   },
   "prettier": {
     "tabWidth": 2,
