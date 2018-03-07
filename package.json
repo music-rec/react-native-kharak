@@ -1,6 +1,6 @@
 {
   "name": "react-native-kharak",
-  "version": "1.2.2",
+  "version": "1.2.3",
   "description": "react-native-kharak",
   "main": "src/index.js",
   "scripts": {
