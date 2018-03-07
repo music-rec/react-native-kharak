@@ -12,7 +12,8 @@ export const saga = createSagaMiddleware();
 const defaultMiddleware = [].concat(navigationMiddleware, saga);
 
 let store;
-export const configureStore = (reducers = {}, initialState = {}, middlewares = [], { compose = compose }) => {
+export const configureStore = (reducers = {}, initialState = {}, middlewares = [], configs = { compose }) => {
+  const composeEnhancers = configs.compose || compose;
   if (store) {
     store.replaceReducer(combineReducers({ ...reducers }));
     return store;
@@ -27,7 +28,7 @@ export const configureStore = (reducers = {}, initialState = {}, middlewares = [
   store = createStore(
     persistCombineReducers(config, { ...reducers }), // combineReducers(reducers),
     initialState,
-    compose(applyMiddleware(...defaultMiddleware.concat(...middlewares).concat([saga])))
+    composeEnhancers(applyMiddleware(...defaultMiddleware.concat(...middlewares).concat([saga])))
   );
   persistStore(store, null, (...args) => {
     console.log(args);
