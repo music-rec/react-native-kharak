@@ -21,8 +21,8 @@ const AppWithNavigationState = connect(({ nav }) => ({ nav }))(({ dispatch, nav,
   />
 ));
 
-export const configureAppNavigator = (routes, configs = {}, Navigator = StackNavigator) => {
-  const AppNavigator = Navigator(
+export const configureAppNavigator = (routes, configs = {}, navigator = StackNavigator) => {
+  const AppNavigator = navigator(
     {
       ...routes
     },

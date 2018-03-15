@@ -16,7 +16,7 @@ const createReducer = (AppNavigator, { initialRouteName = null }) => {
     initialNavState = AppNavigator.router.getStateForAction(initialAction);
   } else {
     // Start with two routes: The Main screen, with the Login screen on top.
-    const firstAction = AppNavigator.router.getActionForPathAndParams('Main');
+    const firstAction = AppNavigator.router.getActionForPathAndParams();
     const tempNavState = AppNavigator.router.getStateForAction(firstAction);
     const secondAction = AppNavigator.router.getActionForPathAndParams('Login');
     initialNavState = AppNavigator.router.getStateForAction(secondAction, tempNavState);
