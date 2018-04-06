@@ -1,12 +1,14 @@
-/* eslint-disable prefer-rest-params, no-unused-vars, require-yield */
-import React from 'react';
+/* eslint-disable no-plusplus, prefer-rest-params, no-unused-vars, require-yield */
 import { merge, map, union, without, castArray } from 'lodash';
 import { call, put } from 'redux-saga/effects';
 
 const combine = (features, extractor) => without(union(...map(features, res => castArray(extractor(res)))), undefined);
 
 export default class Connector {
-  constructor({ namespace = null, state: initialState = {}, reducer = {}, effects = {}, route, navItem }, ...features) {
+  constructor(
+    { namespace = null, state: initialState = {}, reducers = {}, effects = {}, subscriptions = {}, route, navItem },
+    ...features
+  ) {
     if (!(arguments[0] instanceof Connector) && namespace) {
       this.reducer = [
         {
@@ -23,7 +25,7 @@ export default class Connector {
               });
               return state;
             }
-            func = reducer[type.replace(new RegExp(`^${namespace}/`), '')];
+            func = reducers[type.replace(new RegExp(`^${namespace}/`), '')];
             if (func) {
               return func(state, action);
             }
@@ -31,22 +33,65 @@ export default class Connector {
           }
         }
       ];
+      this.modules = [
+        {
+          namespace,
+          state: initialState,
+          reducers,
+          effects,
+          subscriptions
+        }
+      ];
     } else {
-      this.reducer = combine(arguments, arg => arg.reducers || {});
+      // this.reducer = combine(arguments, arg => arg.reducers || {});
+      this.modules = combine(arguments, arg => arg.modules);
+      // console.log('sub modules', this.modules);
     }
-    this.tabItem = combine(arguments, arg => arg.tabItem);
-    this.route = combine(arguments, arg => arg.route);
+    // this.subscription = combine(arguments, arg => arg.subscriptions);
+    // this.tabItem = combine(arguments, arg => arg.tabItem);
+    // this.route = combine(arguments, arg => arg.route);
+
+    const module = {
+      namespace,
+      state: initialState,
+      reducers,
+      effects,
+      subscriptions
+    };
   }
 
   get tabItems() {
     return merge(...this.tabItem);
   }
 
+  get length() {
+    return this.modules.length;
+  }
+
   get reducers() {
-    return merge(...this.reducer);
+    return [];
   }
 
   get routes() {
-    return merge(...this.route);
+    console.log(this.module);
+    return {};
+    // return merge(...this.route);
   }
+
+  get subscriptions() {
+    return [];
+  }
+
+  [Symbol.iterator] = () => {
+    const values = this.modules;
+    let index = 0;
+    return {
+      next() {
+        return {
+          value: values[index],
+          done: index++ >= values.length
+        };
+      }
+    };
+  };
 }

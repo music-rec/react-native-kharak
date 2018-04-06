@@ -1,8 +1,9 @@
 /* eslint-env jest */
-import 'react-native/jest/setup';
+import 'react-native';
 import React from 'react';
 import ReactEnzymeAdapter from 'enzyme-adapter-react-16';
 import Enzyme from 'enzyme';
+
 import AsyncStorage from './AsyncStorage';
 
 jest.mock('NativeModules', () => ({
@@ -16,6 +17,10 @@ jest.mock('NativeModules', () => ({
   },
   SourceCode: {
     scriptURL: null
+  },
+  KeyboardObserver: {
+    addListener: jest.fn(),
+    removeListeners: jest.fn()
   }
 }));
 
@@ -46,6 +51,8 @@ Object.defineProperty(React.Component.prototype, 'setState', {
     });
   }
 });
+
+Date.now = jest.fn(() => 0);
 
 Enzyme.configure({ adapter: new ReactEnzymeAdapter() });
 

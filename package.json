@@ -5,7 +5,7 @@
   "main": "src/index.js",
   "scripts": {
     "precommit": "lint-staged",
-    "test": "jest"
+    "test": "jest --verbose"
   },
   "directories": {
     "src": "./src"
@@ -29,17 +29,19 @@
   },
   "homepage": "https://github.com/limaofeng/react-native-kharak#readme",
   "peerDependencies": {
-    "react": "^16.3.0-alpha.1",
-    "react-native": "^0.54.0"
+    "react": "^16.3.1",
+    "react-native": "^0.54.4"
   },
   "dependencies": {
+    "is-plain-object": "^2.0.4",
     "lodash": "^4.17.5",
-    "react-navigation": "^1.4.0",
+    "react-navigation": "^1.5.11",
     "react-navigation-redux-helpers": "^1.0.3",
     "react-redux": "^5.0.7",
     "redux": "^3.7.2",
     "redux-persist": "^5.9.1",
-    "redux-saga": "^0.16.0"
+    "redux-saga": "^0.16.0",
+    "warning": "^3.0.0"
   },
   "devDependencies": {
     "babel-core": "^6.26.0",
@@ -47,21 +49,21 @@
     "babel-preset-react-native-stage-0": "^1.0.1",
     "enzyme": "^3.3.0",
     "enzyme-adapter-react-16": "^1.1.1",
-    "eslint": "^4.18.2",
+    "eslint": "^4.19.1",
     "eslint-config-airbnb": "^16.1.0",
-    "eslint-plugin-import": "^2.9.0",
+    "eslint-plugin-import": "^2.10.0",
     "eslint-plugin-jsx-a11y": "^6.0.3",
     "eslint-plugin-prettier": "^2.6.0",
     "eslint-plugin-react": "^7.7.0",
     "husky": "^0.14.3",
-    "jest": "^22.4.2",
-    "lint-staged": "^7.0.0",
-    "moment": "^2.21.0",
+    "jest": "^22.4.3",
+    "lint-staged": "^7.0.4",
+    "moment": "^2.22.0",
     "prettier": "^1.11.1",
-    "react": "^16.3.0-alpha.1",
-    "react-dom": "^16.3.0-alpha.1",
-    "react-native": "^0.54.0",
-    "react-test-renderer": "^16.3.0-alpha.1"
+    "react": "^16.3.1",
+    "react-dom": "^16.3.1",
+    "react-native": "^0.54.4",
+    "react-test-renderer": "^16.3.1"
   },
   "prettier": {
     "tabWidth": 2,
