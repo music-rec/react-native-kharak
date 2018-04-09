@@ -5,7 +5,7 @@
   "main": "src/index.js",
   "scripts": {
     "precommit": "lint-staged",
-    "test": "jest --verbose"
+    "test": "jest"
   },
   "directories": {
     "src": "./src"
