@@ -2,6 +2,7 @@
 import invariant from 'invariant';
 import * as sagaEffects from 'redux-saga/effects';
 import warning from 'warning';
+
 import {
   takeEveryHelper as takeEvery,
   takeLatestHelper as takeLatest,
@@ -15,7 +16,15 @@ export default function getSaga(resolve, reject, effects, model, onError, onEffe
   return function*() {
     for (const key in effects) {
       if (Object.prototype.hasOwnProperty.call(effects, key)) {
-        const watcher = getWatcher(resolve, reject, key, effects[key], model, onError, onEffect);
+        const watcher = getWatcher(
+          resolve,
+          reject,
+          `${model.namespace}${NAMESPACE_SEP}${key}`,
+          effects[key],
+          model,
+          onError,
+          onEffect
+        );
         const task = yield sagaEffects.fork(watcher);
         yield sagaEffects.fork(function*() {
           yield sagaEffects.take(`${model.namespace}/@@CANCEL_EFFECTS`);
@@ -30,7 +39,6 @@ function getWatcher(resolve, reject, key, _effect, model, onError, onEffect) {
   let effect = _effect;
   let type = 'takeEvery';
   let ms;
-
   if (Array.isArray(_effect)) {
     effect = _effect[0];
     const opts = _effect[1];

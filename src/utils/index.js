@@ -34,8 +34,6 @@ export const lazyUpdate = (oValue, { isEqual = _isEqual, onlyDiff = false, delay
         return;
       }
       timer = setTimeout(() => {
-        console.log(lValue, value, isEqual(lValue, value));
-        console.log(`执行更新 ${JSON.stringify(value)}`);
         resolve(onlyDiff ? diff(lValue, value) : value);
         lValue = clone(value);
         clearTimeout(timer);
@@ -57,11 +55,5 @@ export const sleep = time =>
       clearTimeout(timer);
     }, time);
   });
-
-export isPlainObject from 'is-plain-object';
-export const isArray = Array.isArray.bind(Array);
-export const isFunction = o => typeof o === 'function';
-export const returnSelf = m => m;
-export const noop = () => {};
 
 export { format };

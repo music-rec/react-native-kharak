@@ -1,19 +1,10 @@
-export default (namespace, reducers, effects, initialState) => (state = initialState, action) => {
-  if (action.type.startsWith('@@')) {
-    return state;
+import handleActions from './handleActions';
+
+export default function getReducer(reducers, state, module) {
+  // Support reducer enhancer
+  // e.g. reducers: [realReducers, enhancer]
+  if (Array.isArray(reducers)) {
+    return reducers[1](handleActions(reducers[0], state, module));
   }
-  const { type } = action;
-  //   let func = effects[type.replace(new RegExp(`^${namespace}/`), '')];
-  //   if (func) {
-  //     // eslint-disable-next-line
-  //     require('./redux').saga.run(function*() {
-  //       yield call(func, action, { call, put });
-  //     });
-  //     return state;
-  //   }
-  const func = reducers[type.replace(new RegExp(`^${namespace}/`), '')];
-  if (func) {
-    return func(state, action);
-  }
-  return state;
-};
+  return handleActions(reducers || {}, state, module);
+}

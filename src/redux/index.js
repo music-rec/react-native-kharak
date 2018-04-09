@@ -28,11 +28,9 @@ export const configureStore = (reducers = {}, initialState = {}, middlewares = [
   store = createStore(
     persistCombineReducers(config, { ...reducers }), // combineReducers(reducers),
     initialState,
-    composeEnhancers(applyMiddleware(...defaultMiddleware.concat(...middlewares).concat([saga])))
+    composeEnhancers(applyMiddleware(...defaultMiddleware.concat([saga]).concat(...middlewares)))
   );
-  persistStore(store, null, (...args) => {
-    console.log(args);
-  });
+  persistStore(store);
   store.runSaga = saga.run;
   return store;
 };

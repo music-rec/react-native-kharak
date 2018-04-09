@@ -1,10 +1,9 @@
 const NAMESPACE_SEP = '/';
 
-export default function prefixType(type, model) {
-  const prefixedType = `${model.namespace}${NAMESPACE_SEP}${type}`;
-  const typeWithoutAffix = prefixedType.replace(/\/@@[^/]+?$/, '');
-  if ((model.reducers && model.reducers[typeWithoutAffix]) || (model.effects && model.effects[typeWithoutAffix])) {
-    return prefixedType;
+export default function prefixType(type, module) {
+  const typeWithoutAffix = type.replace(/\/@@[^/]+?$/, '');
+  if ((module.reducers && module.reducers[typeWithoutAffix]) || (module.effects && module.effects[typeWithoutAffix])) {
+    return `${module.namespace}${NAMESPACE_SEP}${type}`;
   }
   return type;
 }

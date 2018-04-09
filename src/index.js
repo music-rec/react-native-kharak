@@ -4,16 +4,19 @@ import { Provider } from 'react-redux';
 import Connector from './connector';
 import { configureAppNavigator } from './navigation';
 import { configureStore } from './redux';
-import getSaga from './redux/getSaga';
+import { run as runSubscription } from './redux/subscription';
+import createPromiseMiddleware from './redux/createPromiseMiddleware';
 
 export const Feature = Connector;
 
 export * from './redux';
 export * from './navigation';
 
-export default ({ modules, initialState = {}, middlewares = [], routeConfigs = {}, compose, navigator }) => {
-  const { routes, reducers } = modules;
-  const AppNavigator = configureAppNavigator(routes, routeConfigs, navigator);
+export default ({ modules, initialState = {}, middlewares = [], routeConfigs = {}, compose, onError = () => {} }) => {
+  const { routes, reducers, effects } = modules;
+  const { middleware: promiseMiddleware, resolve, reject } = createPromiseMiddleware({ modules });
+  middlewares.push(promiseMiddleware);
+  const AppNavigator = configureAppNavigator(routes, routeConfigs);
   const store = configureStore(
     {
       ...reducers,
@@ -23,20 +26,15 @@ export default ({ modules, initialState = {}, middlewares = [], routeConfigs = {
     middlewares,
     { compose }
   );
-  store.runSaga(
-    getSaga(
-      () => {},
-      () => {},
-      {
-        *test(...args) {
-          console.log(args);
-        }
-      },
-      {
-        namespace: 'test'
-      }
-    )
-  );
+  // Run sagas
+  const sagas = effects(resolve, reject);
+  sagas.forEach(store.runSaga);
+  // Run subscriptions
+  for (const module of modules) {
+    if (module.subscriptions) {
+      runSubscription(module.subscriptions, module, store, onError);
+    }
+  }
   return () => (
     <Provider store={store}>
       <AppNavigator />
