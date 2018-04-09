@@ -36,7 +36,7 @@
     "is-plain-object": "^2.0.4",
     "lodash": "^4.17.5",
     "react-navigation": "^1.5.11",
-    "react-navigation-redux-helpers": "^1.0.3",
+    "react-navigation-redux-helpers": "^1.0.4",
     "react-redux": "^5.0.7",
     "redux": "^3.7.2",
     "redux-persist": "^5.9.1",
@@ -62,7 +62,7 @@
     "prettier": "^1.11.1",
     "react": "^16.3.1",
     "react-dom": "^16.3.1",
-    "react-native": "^0.54.4",
+    "react-native": "^0.55.1",
     "react-test-renderer": "^16.3.1"
   },
   "prettier": {
