@@ -24,14 +24,14 @@ describe('Connector Tests', () => {
         }
       }
     });
-    expect(count.reducers.count(0, { type: 'count/add' })).toBe(1);
+    expect(count.reducers.count(0, { type: 'count/add' })).toBe(0);
   });
 
   it('effects an Instance', () => {
     const user = new Feature({
       namespace: 'user',
       state: { hasAuthorized: false },
-      reducer: {
+      reducers: {
         login(state, { payload: user }) {
           return { hasAuthorized: true, user };
         }
@@ -103,7 +103,7 @@ describe('Connector Tests', () => {
         }
       }
     });
-    const features = new Feature(count, user);
-    console.log(features.reducers);
+    const modules = new Feature(count, user);
+    expect(modules).toHaveLength(2);
   });
 });

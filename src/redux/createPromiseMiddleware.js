@@ -19,9 +19,9 @@ export default function createPromiseMiddleware(app) {
   function isEffect(type) {
     if (!type || typeof type !== 'string') return false;
     const [namespace] = type.split(NAMESPACE_SEP);
-    const model = app.models.filter(m => m.namespace === namespace)[0];
-    if (model) {
-      if (model.effects && model.effects[type]) {
+    const module = app.modules.filter(m => m.namespace === namespace)[0];
+    if (module) {
+      if (module.effects && module.effects[type]) {
         return true;
       }
     }

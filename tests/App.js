@@ -1,7 +1,7 @@
 import React from 'react';
 import { AppRegistry, View, Text } from 'react-native';
 
-import kharak from '../src';
+import kharak, { Feature } from '../src';
 
 const MainScreen = () => (
   <View>
@@ -14,7 +14,8 @@ const LoginScreen = () => (
   </View>
 );
 
-const ExampleApp = kharak({
+const modules = new Feature({
+  namespace: 'main',
   reducers: {
     user(state = { name: 'limaofeng' }) {
       return state;
@@ -27,6 +28,13 @@ const ExampleApp = kharak({
     Login: {
       screen: LoginScreen
     }
+  }
+});
+
+const ExampleApp = kharak({
+  modules,
+  routeConfigs: {
+    initialRouteName: 'Main'
   }
 });
 

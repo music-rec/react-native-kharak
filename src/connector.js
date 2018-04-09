@@ -10,18 +10,18 @@ const combine = (features, extractor) => without(union(...map(features, res => c
 
 export default class Connector {
   constructor(
-    { namespace = null, state: initialState = {}, reducer = {}, effects, subscriptions, route, navItem },
+    { namespace = null, state: initialState = {}, reducers = {}, effects, subscriptions, routes, navItem },
     ...features
   ) {
-    if (!(arguments[0] instanceof Connector) && namespace) {
+    if (!(arguments[0] instanceof Connector)) {
       this.modules = [
         {
           namespace,
           state: initialState,
-          reducers: reducer,
+          reducers,
           effects,
           subscriptions,
-          routes: route
+          routes
         }
       ];
     } else {
@@ -61,4 +61,6 @@ export default class Connector {
 
   effects = (resolve, reject, onError) =>
     this.modules.filter(m => m.effects).map(m => getSaga(resolve, reject, m.effects, m, onError, []));
+
+  filter = (...args) => this.modules.filter(...args);
 }
