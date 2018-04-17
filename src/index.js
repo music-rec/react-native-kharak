@@ -24,7 +24,7 @@ export default ({
   compose,
   onError = () => {}
 }) => {
-  const modules = new Connector(inputModules, overlayModule);
+  const modules = new Connector(inputModules, new Connector(overlayModule));
   const { routes, reducers, effects } = modules;
   const { middleware: promiseMiddleware, resolve, reject } = createPromiseMiddleware({ modules });
   middlewares.push(promiseMiddleware);
