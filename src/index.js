@@ -7,12 +7,24 @@ import { configureStore } from './redux';
 import { run as runSubscription } from './redux/subscription';
 import createPromiseMiddleware from './redux/createPromiseMiddleware';
 
+import Overlay, { module as overlayModule } from './Overlay';
+import PortalAlias from './portal';
+
 export const Feature = Connector;
+export const Portal = PortalAlias;
 
 export * from './redux';
 export * from './navigation';
 
-export default ({ modules, initialState = {}, middlewares = [], routeConfigs = {}, compose, onError = () => {} }) => {
+export default ({
+  modules: inputModules,
+  initialState = {},
+  middlewares = [],
+  routeConfigs = {},
+  compose,
+  onError = () => {}
+}) => {
+  const modules = new Connector(inputModules, overlayModule);
   const { routes, reducers, effects } = modules;
   const { middleware: promiseMiddleware, resolve, reject } = createPromiseMiddleware({ modules });
   middlewares.push(promiseMiddleware);
@@ -37,7 +49,9 @@ export default ({ modules, initialState = {}, middlewares = [], routeConfigs = {
   }
   return () => (
     <Provider store={store}>
-      <AppNavigator />
+      <Overlay>
+        <AppNavigator />
+      </Overlay>
     </Provider>
   );
 };

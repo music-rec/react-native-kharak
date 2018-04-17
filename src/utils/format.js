@@ -225,7 +225,7 @@ export default {
       return v;
     }
     v *= 1;
-    if (typeof v !== 'number' || Number.isFinite(v)) {
+    if (typeof v !== 'number' || Number.isNaN(v)) {
       return '';
     }
     let comma = ',';
