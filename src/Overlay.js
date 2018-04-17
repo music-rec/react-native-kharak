@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Dimensions, View, Text } from 'react-native';
+import { Dimensions, View } from 'react-native';
 
 import { connect } from 'react-redux';
 
@@ -40,8 +40,7 @@ class Overlay extends React.Component {
     );
   }
 }
-
-export const module = new Connector({
+export const feature = new Connector({
   namespace: 'overlay',
   state: {
     visible: false

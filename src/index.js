@@ -7,7 +7,7 @@ import { configureStore } from './redux';
 import { run as runSubscription } from './redux/subscription';
 import createPromiseMiddleware from './redux/createPromiseMiddleware';
 
-import Overlay, { module as overlayModule } from './Overlay';
+import Overlay, { feature } from './Overlay';
 import PortalAlias from './portal';
 
 export const Feature = Connector;
@@ -24,7 +24,7 @@ export default ({
   compose,
   onError = () => {}
 }) => {
-  const modules = new Connector(inputModules, overlayModule);
+  const modules = new Connector(inputModules, feature);
   const { routes, reducers, effects } = modules;
   const { middleware: promiseMiddleware, resolve, reject } = createPromiseMiddleware({ modules });
   middlewares.push(promiseMiddleware);
