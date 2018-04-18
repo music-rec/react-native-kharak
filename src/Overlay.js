@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Dimensions, View } from 'react-native';
+import { Dimensions, View, TouchableWithoutFeedback } from 'react-native';
 
 import { connect } from 'react-redux';
 
@@ -26,13 +26,24 @@ class Overlay extends React.Component {
               position: 'absolute',
               top: 0,
               width: ScreenWidth,
-              height: ScreenHeight,
-              backgroundColor: 'rgba(0, 0, 0, 0.5)'
-            }}
-            onPress={() => {
-              dispatch({ type: 'overlay/hidden' });
+              height: ScreenHeight
             }}
           >
+            <TouchableWithoutFeedback
+              onPress={() => {
+                dispatch({ type: 'overlay/hidden' });
+              }}
+            >
+              <View
+                style={{
+                  position: 'absolute',
+                  top: 0,
+                  width: ScreenWidth,
+                  height: ScreenHeight,
+                  backgroundColor: 'rgba(0, 0, 0, 0.5)'
+                }}
+              />
+            </TouchableWithoutFeedback>
             <Portal.Black name="popup" />
           </View>
         )}

@@ -16,6 +16,8 @@ export const Portal = PortalAlias;
 export * from './redux';
 export * from './navigation';
 
+const PortalProvider = Portal.Provider;
+
 export default ({
   modules: inputModules,
   initialState = {},
@@ -49,9 +51,11 @@ export default ({
   }
   return () => (
     <Provider store={store}>
-      <Overlay>
-        <AppNavigator />
-      </Overlay>
+      <PortalProvider>
+        <Overlay>
+          <AppNavigator />
+        </Overlay>
+      </PortalProvider>
     </Provider>
   );
 };
