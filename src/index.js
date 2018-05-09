@@ -41,7 +41,7 @@ export default ({
     { compose }
   );
   // Run sagas
-  const sagas = effects(resolve, reject);
+  const sagas = effects(resolve, reject, onError);
   sagas.forEach(store.runSaga);
   // Run subscriptions
   for (const module of modules) {

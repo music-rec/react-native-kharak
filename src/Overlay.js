@@ -11,10 +11,17 @@ class Overlay extends React.Component {
   static propTypes = {
     children: PropTypes.any.isRequired,
     visible: PropTypes.bool.isRequired,
+    locked: PropTypes.bool.isRequired,
     dispatch: PropTypes.func.isRequired
   };
+  handleTouch = () => {
+    const { dispatch, visible, locked } = this.props;
+    if (visible && !locked) {
+      dispatch({ type: 'overlay/hidden' });
+    }
+  };
   render() {
-    const { children, dispatch, visible } = this.props;
+    const { children, visible } = this.props;
     const ScreenWidth = Dimensions.get('window').width;
     const ScreenHeight = Dimensions.get('window').height;
     return (
@@ -29,11 +36,7 @@ class Overlay extends React.Component {
               height: ScreenHeight
             }}
           >
-            <TouchableWithoutFeedback
-              onPress={() => {
-                dispatch({ type: 'overlay/hidden' });
-              }}
-            >
+            <TouchableWithoutFeedback onPress={this.handleTouch}>
               <View
                 style={{
                   position: 'absolute',
@@ -54,16 +57,20 @@ class Overlay extends React.Component {
 export const feature = new Connector({
   namespace: 'overlay',
   state: {
-    visible: false
+    visible: false,
+    locked: false
   },
   reducers: {
     visible() {
       return { visible: true };
     },
+    locked() {
+      return { locked: true };
+    },
     hidden() {
-      return { visible: false };
+      return { visible: false, locked: false };
     }
   }
 });
 
-export default connect(({ overlay: { visible } }) => ({ visible }))(Overlay);
+export default connect(({ overlay: { visible, locked } }) => ({ visible, locked }))(Overlay);
