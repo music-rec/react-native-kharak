@@ -65,7 +65,7 @@ export const feature = new Connector({
       return { visible: true };
     },
     locked() {
-      return { locked: true };
+      return { visible: true, locked: true };
     },
     hidden() {
       return { visible: false, locked: false };
