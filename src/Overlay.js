@@ -62,7 +62,7 @@ export const feature = new Connector({
   },
   reducers: {
     visible() {
-      return { visible: true };
+      return { visible: true, locked: false };
     },
     locked() {
       return { visible: true, locked: true };
