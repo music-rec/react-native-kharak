@@ -6,7 +6,9 @@ export function run(subs, module, store, onError) {
       const sub = subs[key];
       sub(
         {
-          dispatch: prefixedDispatch(store.dispatch, module)
+          dispatch: prefixedDispatch(store.dispatch, module),
+          state: store.getState()[module.namespace],
+          store
         },
         onError
       );
