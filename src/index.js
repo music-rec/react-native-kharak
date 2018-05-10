@@ -1,5 +1,6 @@
 import React from 'react';
-import { Provider, AppState } from 'react-redux';
+import { Provider } from 'react-redux';
+import { AppState } from 'react-native';
 
 import Connector from './connector';
 import { configureAppNavigator } from './navigation';
