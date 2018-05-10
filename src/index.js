@@ -1,5 +1,5 @@
 import React from 'react';
-import { Provider } from 'react-redux';
+import { Provider, AppState } from 'react-redux';
 
 import Connector from './connector';
 import { configureAppNavigator } from './navigation';
@@ -24,7 +24,8 @@ export default ({
   middlewares = [],
   routeConfigs = {},
   compose,
-  onError = () => {}
+  onError = () => {},
+  onLoad = () => {}
 }) => {
   const modules = new Connector(inputModules, feature);
   const { routes, reducers, effects } = modules;
@@ -51,15 +52,34 @@ export default ({
         runSubscription(module.subscriptions, module, store, onError);
       }
     }
+    onLoad();
   });
 
-  return () => (
-    <Provider store={store}>
-      <PortalProvider>
-        <Overlay>
-          <AppNavigator />
-        </Overlay>
-      </PortalProvider>
-    </Provider>
-  );
+  return class App extends React.Component {
+    componentWillMount() {
+      AppState.removeEventListener('change', this.handleAppStateChange);
+    }
+    componentDidMount() {
+      AppState.addEventListener('change', this.handleAppStateChange);
+      store.then(() => {
+        onLoad();
+      });
+    }
+    handleAppStateChange = appState => {
+      if (appState === 'background') {
+        console.log('app is background.');
+      }
+    };
+    render() {
+      return (
+        <Provider store={store}>
+          <PortalProvider>
+            <Overlay>
+              <AppNavigator />
+            </Overlay>
+          </PortalProvider>
+        </Provider>
+      );
+    }
+  };
 };
