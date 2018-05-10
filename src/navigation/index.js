@@ -20,7 +20,11 @@ const AppWithNavigationState = connect(({ nav }) => ({ nav }))(({ dispatch, nav,
   />
 ));
 
-export const configureAppNavigator = (routes, configs = {}, Navigator = StackNavigator) => {
+export const configureAppNavigator = (
+  routes,
+  { actionNames, initialRouteName, loginRouteName, ...configs },
+  Navigator = StackNavigator
+) => {
   const AppNavigator = Navigator(
     {
       ...routes
@@ -36,6 +40,6 @@ export const configureAppNavigator = (routes, configs = {}, Navigator = StackNav
   );
   const AppNavigationWrapper = () => <AppWithNavigationState appNavigator={AppNavigator} />;
   AppNavigationWrapper.createReducer = () =>
-    createReducer(AppNavigator, { initialRouteName: configs.initialRouteName });
+    createReducer(AppNavigator, { initialRouteName, loginRouteName, actionNames });
   return AppNavigationWrapper;
 };

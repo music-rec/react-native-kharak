@@ -9,27 +9,29 @@ const addListener = createReduxBoundAddListener('root');
  * @param {*} AppNavigator 导航对象
  * @param {*} configs 配置对象
  */
-const createReducer = (AppNavigator, { initialRouteName = null }) => {
+const createReducer = (
+  AppNavigator,
+  { actionNames = { login: 'auth/login', logout: 'auth/logout' }, initialRouteName = null, loginRouteName = null }
+) => {
   let initialNavState = {};
   if (initialRouteName) {
     const initialAction = AppNavigator.router.getActionForPathAndParams(initialRouteName);
     initialNavState = AppNavigator.router.getStateForAction(initialAction);
-  } else {
+  }
+  if (loginRouteName) {
     // Start with two routes: The Main screen, with the Login screen on top.
-    const firstAction = AppNavigator.router.getActionForPathAndParams('Main');
-    const tempNavState = AppNavigator.router.getStateForAction(firstAction);
-    const secondAction = AppNavigator.router.getActionForPathAndParams('Login');
-    initialNavState = AppNavigator.router.getStateForAction(secondAction, tempNavState);
+    const loginAction = AppNavigator.router.getActionForPathAndParams(loginRouteName);
+    initialNavState = AppNavigator.router.getStateForAction(loginAction, initialNavState);
   }
 
   return {
     nav(state = initialNavState, action) {
       let nextState;
       switch (action.type) {
-        case 'auth/login':
+        case actionNames.login:
           nextState = AppNavigator.router.getStateForAction(NavigationActions.back(), state);
           break;
-        case 'auth/logout':
+        case actionNames.logout:
           nextState = AppNavigator.router.getStateForAction(NavigationActions.navigate({ routeName: 'Login' }), state);
           break;
         default:

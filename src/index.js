@@ -40,15 +40,19 @@ export default ({
     middlewares,
     { compose }
   );
-  // Run sagas
-  const sagas = effects(resolve, reject, onError);
-  sagas.forEach(store.runSaga);
-  // Run subscriptions
-  for (const module of modules) {
-    if (module.subscriptions) {
-      runSubscription(module.subscriptions, module, store, onError);
+
+  store.then(() => {
+    // Run sagas
+    const sagas = effects(resolve, reject, onError);
+    sagas.forEach(store.runSaga);
+    // Run subscriptions
+    for (const module of modules) {
+      if (module.subscriptions) {
+        runSubscription(module.subscriptions, module, store, onError);
+      }
     }
-  }
+  });
+
   return () => (
     <Provider store={store}>
       <PortalProvider>

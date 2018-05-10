@@ -30,7 +30,12 @@ export const configureStore = (reducers = {}, initialState = {}, middlewares = [
     initialState,
     composeEnhancers(applyMiddleware(...defaultMiddleware.concat([saga]).concat(...middlewares)))
   );
-  persistStore(store, null, () => {});
+  const persistPromise = new Promise(resolve => {
+    persistStore(store, null, () => {
+      resolve();
+    });
+  });
   store.runSaga = saga.run;
+  store.then = (...args) => persistPromise.then(...args);
   return store;
 };
