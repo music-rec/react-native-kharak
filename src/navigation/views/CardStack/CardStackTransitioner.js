@@ -3,8 +3,8 @@ import PropTypes from 'prop-types';
 import { NativeModules } from 'react-native';
 import { Transitioner } from 'react-navigation';
 
-import CardStackStyleInterpolator from 'react-navigation/src/views/CardStack/CardStackStyleInterpolator';
-import TransitionConfigs from 'react-navigation/src/views/CardStack/TransitionConfigs';
+import CardStackStyleInterpolator from 'react-navigation/src/views/StackView/StackViewStyleInterpolator';
+import TransitionConfigs from 'react-navigation/src/views/StackView/StackViewTransitionConfigs';
 
 import CardStack from './CardStack';
 

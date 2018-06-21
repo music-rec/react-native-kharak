@@ -1,6 +1,7 @@
 import React from 'react';
 import { Provider } from 'react-redux';
 import { AppState } from 'react-native';
+import { PersistGate } from 'redux-persist/integration/react';
 
 import Connector from './connector';
 import { configureAppNavigator } from './navigation';
@@ -74,11 +75,13 @@ export default ({
     render() {
       return (
         <Provider store={store}>
-          <PortalProvider>
-            <Overlay>
-              <AppNavigator />
-            </Overlay>
-          </PortalProvider>
+          <PersistGate loading={null} persistor={store.persistor}>
+            <PortalProvider>
+              <Overlay>
+                <AppNavigator />
+              </Overlay>
+            </PortalProvider>
+          </PersistGate>
         </Provider>
       );
     }

@@ -3,13 +3,15 @@ import PropTypes from 'prop-types';
 import GatewayRegistry from './GatewayRegistry';
 
 export default class Gateway extends React.Component {
-  static contextTypes = {
-    gatewayRegistry: PropTypes.instanceOf(GatewayRegistry).isRequired
-  };
-
   static propTypes = {
     into: PropTypes.string.isRequired,
     children: PropTypes.node
+  };
+  static contextTypes = {
+    gatewayRegistry: PropTypes.instanceOf(GatewayRegistry).isRequired
+  };
+  static defaultProps = {
+    children: null
   };
 
   constructor(props, context) {

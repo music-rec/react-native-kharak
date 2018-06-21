@@ -4,11 +4,10 @@ import clamp from 'clamp';
 import { Animated, StyleSheet, PanResponder, Platform, View, I18nManager, Easing } from 'react-native';
 
 import { NavigationActions, addNavigationHelpers } from 'react-navigation';
-
-import Card from 'react-navigation/src/views/CardStack/Card';
+import Card from 'react-navigation/src/views/StackView/StackViewCard';
 import SceneView from 'react-navigation/src/views/SceneView';
 
-import TransitionConfigs from 'react-navigation/src/views/CardStack/TransitionConfigs';
+import TransitionConfigs from 'react-navigation/src/views/StackView/StackViewTransitionConfigs';
 
 const emptyFunction = () => {};
 

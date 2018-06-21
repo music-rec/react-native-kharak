@@ -1,19 +1,17 @@
 import { persistStore, persistCombineReducers } from 'redux-persist';
 import { AsyncStorage } from 'react-native';
+import logger from 'redux-logger';
 import createSagaMiddleware from 'redux-saga';
 
 import { createStore, applyMiddleware, compose, combineReducers } from 'redux';
-// import defaultMiddleware from './middleware';
 
 import { middleware as navigationMiddleware } from '../navigation/redux';
 
 export const saga = createSagaMiddleware();
 
-const defaultMiddleware = [].concat(navigationMiddleware, saga);
-
 let store;
-export const configureStore = (reducers = {}, initialState = {}, middlewares = [], configs = { compose }) => {
-  const composeEnhancers = configs.compose || compose;
+export const configureStore = (reducers = {}, initialState = {}, middlewares = [], configs) => {
+  const { compose: composeEnhancers = compose, logging = false } = configs;
   if (store) {
     store.replaceReducer(combineReducers({ ...reducers }));
     return store;
@@ -23,15 +21,15 @@ export const configureStore = (reducers = {}, initialState = {}, middlewares = [
     storage: AsyncStorage,
     transform: [],
     blacklist: ['nav']
-    // whitelist: ['user'],
   };
+  const allMiddlewares = [...middlewares, navigationMiddleware, saga, ...(logging ? [logger] : [])];
   store = createStore(
-    persistCombineReducers(config, { ...reducers }), // combineReducers(reducers),
+    persistCombineReducers(config, { ...reducers }),
     initialState,
-    composeEnhancers(applyMiddleware(...defaultMiddleware.concat([saga]).concat(...middlewares)))
+    composeEnhancers(applyMiddleware(...allMiddlewares))
   );
   const persistPromise = new Promise(resolve => {
-    persistStore(store, null, () => {
+    store.persistor = persistStore(store, null, () => {
       resolve();
     });
   });
