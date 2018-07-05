@@ -30,7 +30,7 @@
   "homepage": "https://github.com/limaofeng/react-native-kharak#readme",
   "peerDependencies": {
     "react": "^16.4.1",
-    "react-native": "^0.55.4"
+    "react-native": "^0.56.0"
   },
   "dependencies": {
     "is-plain-object": "^2.0.4",
